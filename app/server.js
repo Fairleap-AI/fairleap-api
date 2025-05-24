@@ -14,6 +14,7 @@ app.use(cors({
     origin: [
         'http://localhost:80',
         'http://localhost:8080',
+        'http://localhost:3000',
         'http://localhost:4173',
         'http://localhost:5173',
         'https://fairleap.cloud',
@@ -29,11 +30,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const userRouter = require('./domains/users/entities/user.router');
+const userRouter = require('./domains/users/user.router');
 app.use('/user', userRouter);
 
-// const serviceRouter = require('./domains/services/entities/services.router');
-// app.use('/service', serviceRouter);
+const serviceRouter = require('./domains/services/services.router');
+app.use('/service', serviceRouter);
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'templates/pages/index.html'));

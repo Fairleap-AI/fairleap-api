@@ -1,5 +1,5 @@
-const User = require('../../entities/user.model').User;
-const Service = require('../../../services/entities/services.model').Service;
+const User = require('../..//user.model').User;
+const Service = require('../../../services/services.model').Service;
 
 const bcrypt = require('bcrypt');
 const signToken = require('../../../../utils/auth/jwt/sign');

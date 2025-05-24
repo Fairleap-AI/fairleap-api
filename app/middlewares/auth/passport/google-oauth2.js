@@ -1,5 +1,5 @@
-const User = require('../../../domains/users/entities/user.model').User;
-const Service = require('../../../domains/services/entities/services.model').Service;
+const User = require('../../../domains/users/user.model').User;
+const Service = require('../../../domains/services/services.model').Service;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const Strategy = new GoogleStrategy({
