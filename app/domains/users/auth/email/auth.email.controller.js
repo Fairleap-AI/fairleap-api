@@ -6,6 +6,7 @@ const signToken = require('../../../../utils/auth/jwt/sign');
 const verifyJWT = require('../../../../utils/auth/jwt/verify');
 
 const mailsender = require('../../../../utils/mail/sender');
+const mailrenderer = require('../../../../utils/mail/renderer');
 
 const emailVerificationInterval = 5 * 60;
 
@@ -83,13 +84,17 @@ const verify = async (req, res) => {
             email: email,
             isVerified: false
         });
+
+        const html = await mailrenderer('activation', { 
+            activation_url: `${req.get('host') == "localhost:" + (process.env.PORT || "8080") ? "http" : "https"}://${req.get('host')}/user/auth/email/activate?token=${encodeURIComponent(verificationToken)}`
+        });
         
         await mailsender.sendmail({
             fromaddres: 'Fairleap AI <noreply@fairleap.cloud>',
             receipients: email,
             subject: 'Sign in to Fairleap AI',
-            message: `Hi\n\nPlease click the following link to verify your account registration at Fairleap AI\n\n\n${req.get('host') == "localhost:" + (process.env.PORT || "8080") ? "http" : "https"}://${req.get('host')}/user/auth/email/activate?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this registration request, please disregard this email.\n\nThank You.\n\n\n`,
-            html: false
+            message: html,
+            html: true
         });
         return res.status(200).json({
             status: 'success',
@@ -113,23 +118,28 @@ const activate = async (req, res) => {
         const token = req.query.token;
         const verification = verifyJWT(token);
         if (verification.status == "error") {
-            res.send("Email Verification Links Expired");
+            const html = await mailrenderer('expired', {});
+            res.send(html);
         } else {
             if (verification.data.isEmailVerification) {
                 const getUser = await User.findOne({ email: verification.data.email });
                 if (getUser) {
                     if (!getUser.isEmailVerified) {
                         getUser.isEmailVerified = true;
-                        await getUser.save();   
-                        res.send("Email Verified");
+                        await getUser.save();
+                        const html = await mailrenderer('verified', {});
+                        res.send(html);
                     } else {
-                        res.send("Email Already Verified");
+                        const html = await mailrenderer('already_verified', {});
+                        res.send(html);
                     }
                 } else {
-                    res.send("Unauthorized: Invalid Authentication");
+                    const html = await mailrenderer('invalid', {});
+                    res.send(html);
                 }
             } else {
-                res.send("Unauthorized: Invalid Authentication");
+                const html = await mailrenderer('invalid', {});
+                res.send(html);
             }
         }
     } catch (err) {
@@ -381,12 +391,17 @@ const forgot = async (req, res) => {
             isForgotPassword: true
         });
 
+        
+        const html = await mailrenderer('reset', {
+            reset_url: `${process.env.FE_HOST}/changepassword?token=${encodeURIComponent(verificationToken)}`
+        });
+
         await mailsender.sendmail({
             fromaddres: 'Fairleap AI <noreply@fairleap.cloud>',
             receipients: email,
             subject: 'Password Reset for Fairleap AI',
-            message: `Hi\n\nPlease click the following link to reset your password at Fairleap AI\n\n\n${process.env.FE_HOST}/changepassword?token=${encodeURIComponent(verificationToken)}\n\n\nIf you did not initiate this request, please disregard this email.\n\nThank You.\n\n\n`,
-            html: false
+            message: html,
+            html: true
         });
         
         return res.status(200).json({

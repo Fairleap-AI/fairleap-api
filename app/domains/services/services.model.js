@@ -38,8 +38,8 @@ const serviceSchema = new mongoose.Schema({
     },
     chatSession: [{
         chatData: [{
-            query: { type: String, required: true },
-            reply: { type: String, required: true }
+            content: { type: String, required: true },
+            role: { type: String, required: true }
         }]
     }],
     wellness_logs: [{
