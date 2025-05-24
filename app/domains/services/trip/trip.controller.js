@@ -6,12 +6,12 @@ const create = async (req, res) => {
 
         if (!distance || !fare || !tip || !duration || !time_start || !time_end) {
             let invalidItems = [];
-            if (!distance) {invalidItems.push('"distance"')}
-            else if (!fare) {invalidItems.push('"fare"')}
-            else if (!tip) {invalidItems.push('"tip"')}
-            else if (!duration) {invalidItems.push('"duration"')}
-            else if (!time_start) {invalidItems.push('"time_start"')}
-            else if (!time_end) {invalidItems.push('"time_end"')}
+            if (!distance) invalidItems.push('"distance"');
+            if (!fare) invalidItems.push('"fare"');
+            if (!tip) invalidItems.push('"tip"');
+            if (!duration) invalidItems.push('"duration"');
+            if (!time_start) invalidItems.push('"time_start"');
+            if (!time_end) invalidItems.push('"time_end"');
             return res.status(400).json({
                 status: 'error',
                 message: `Parameter ${invalidItems.join(", ")} required`,
