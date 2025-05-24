@@ -37,7 +37,7 @@ const create = async (req, res) => {
             time_end
         })
 
-        const d = new Date(time);
+        const d = new Date(time_start);
         const year = d.getFullYear().toString();
         const month = `${d.getFullYear()}-${("0" + (d.getMonth()+1).toString()).slice(-2)}`;
         const date = `${d.getFullYear()}-${("0" + (d.getMonth()+1).toString()).slice(-2)}-${("0" + d.getDate().toString()).slice(-2)}`;

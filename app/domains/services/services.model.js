@@ -16,7 +16,7 @@ const serviceSchema = new mongoose.Schema({
             total_distance: { type: Number, required: true },
             total_fare: { type: Number, required: true },
             total_tip: { type: Number, required: true },
-            totarandomNuml_earnings: { type: Number, required: true },
+            total_earnings: { type: Number, required: true },
             total_trips: { type: Number, required: true }
         }],
         monthly: [{
