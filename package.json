@@ -1,0 +1,37 @@
+{
+  "name": "fairleap-api",
+  "version": "1.0.0",
+  "description": "Fairleap AI API Backend - Fairleap AI is a platform designed to address income uncertainty and enhance the well-being of Gojek/GOTO drivers",
+  "homepage": "https://github.com/Fairleap-AI/fairleap-api#readme",
+  "bugs": {
+    "url": "https://github.com/Fairleap-AI/fairleap-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fairleap-AI/fairleap-api.git"
+  },
+  "license": "MIT",
+  "author": "Fairleap AI Developers <dev@fairleap.cloud>",
+  "type": "commonjs",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "dev": "nodemon app/index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.12.1",
+    "nodemailer": "^6.10.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
