@@ -1,10 +1,10 @@
 const express = require('express');
-const chatRouter = express.Router();
+const predictRouter = express.Router();
 
 const verifyToken = require('../../../middlewares/auth/jwt/jwt.verify');
 
-const chatController = require('./chat.controller');
+const predictController = require('./predict.controller');
 
-// chatRouter.post('/new', verifyToken, chatController.create);
+predictRouter.post('/earnings', verifyToken, predictController.earnings);
 
-module.exports = chatRouter;
+module.exports = predictRouter;

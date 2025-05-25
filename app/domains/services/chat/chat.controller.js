@@ -49,12 +49,13 @@ const create = async (req, res) => {
 
         getService.chatSession.push({chatData: data.messages});
 
-        await getService.save();
+        const savedData = await getService.save();
 
         res.status(200).json({
             status: "success",
             message: "Successfuly create new chat",
             data: {
+                id: savedData.chatSession.slice(-1)[0]._id,
                 response: data.response
             }
         });
