@@ -140,16 +140,12 @@ const read = async (req, res) => {
 
 const reply = async (req, res) => {
     try {
-        const { query, fare, tip, duration, time_start, time_end } = req.body;
+        const { id, query } = req.body;
 
-        if (!distance || !fare || !tip || !duration || !time_start || !time_end) {
+        if (!id || !query) {
             let invalidItems = [];
-            if (!distance) invalidItems.push('"distance"');
-            if (!fare) invalidItems.push('"fare"');
-            if (!tip) invalidItems.push('"tip"');
-            if (!duration) invalidItems.push('"duration"');
-            if (!time_start) invalidItems.push('"time_start"');
-            if (!time_end) invalidItems.push('"time_end"');
+            if (!id) invalidItems.push('"id"');
+            if (!query) invalidItems.push('"query"');
             return res.status(400).json({
                 status: 'error',
                 message: `Parameter ${invalidItems.join(", ")} required`,
@@ -157,89 +153,60 @@ const reply = async (req, res) => {
             });
         }
 
-        const getService = await Service.findOne({ email: req.user.email });
+        const getService = await Service.findOne(
+            { email: req.user.email, "chatSession._id": id },
+            { "chatSession.$": 1 }
+        );
         if (!getService) {
             return res.status(400).json({
                 status: 'error',
-                message: "User not found or not registered yet",
+                message: "User not found or Invalid chat id",
                 data: {}
             });
         }
 
-        getService.trip_logs.push({
-            distance,
-            fare,
-            tip,
-            duration,
-            time_start,
-            time_end
-        })
+        const requestBody = {
+            query,
+            messages: getService.chatSession[0].chatData.map(({ _id, content, role }) => ({content, role}))
+        };
 
-        const d = new Date(time_start);
-        const year = d.getFullYear().toString();
-        const month = `${d.getFullYear()}-${("0" + (d.getMonth()+1).toString()).slice(-2)}`;
-        const date = `${d.getFullYear()}-${("0" + (d.getMonth()+1).toString()).slice(-2)}-${("0" + d.getDate().toString()).slice(-2)}`;
+        const response = await fetch(process.env.FAIRLEAP_AI_HOST + "/llm/chatbot", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        });
 
-        const yearlyEntry = getService.trip_stats.yearly.find(e => e.year === year);
-        if (yearlyEntry) {
-            yearlyEntry.total_distance += distance;
-            yearlyEntry.total_fare += fare;
-            yearlyEntry.total_tip += tip;
-            yearlyEntry.total_earnings += fare + tip;
-            yearlyEntry.total_trips += 1;
-        } else {
-            getService.trip_stats.yearly.push({
-                year,
-                total_distance: distance,
-                total_fare: fare,
-                total_tip: tip,
-                total_earnings: fare + tip,
-                total_trips: 1
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error(errorData);
+            return res.status(400).json({
+                status: 'error',
+                message: process.env.DEBUG ? errorData.error.message : "Failed to process request",
+                data: errorData.error
             });
         }
 
-        const monthlyEntry = getService.trip_stats.monthly.find(e => e.month === month);
-        if (monthlyEntry) {
-            monthlyEntry.total_distance += distance;
-            monthlyEntry.total_fare += fare;
-            monthlyEntry.total_tip += tip;
-            monthlyEntry.total_earnings += fare + tip;
-            monthlyEntry.total_trips += 1;
-        } else {
-            getService.trip_stats.monthly.push({
-                month,
-                total_distance: distance,
-                total_fare: fare,
-                total_tip: tip,
-                total_earnings: fare + tip,
-                total_trips: 1
-            });
-        }
+        let data = await response.json();
 
-        const dailyEntry = getService.trip_stats.daily.find(e => e.date === date);
-        if (dailyEntry) {
-            dailyEntry.total_distance += distance;
-            dailyEntry.total_fare += fare;
-            dailyEntry.total_tip += tip;
-            dailyEntry.total_earnings += fare + tip;
-            dailyEntry.total_trips += 1;
-        } else {
-            getService.trip_stats.daily.push({
-                date,
-                total_distance: distance,
-                total_fare: fare,
-                total_tip: tip,
-                total_earnings: fare + tip,
-                total_trips: 1
-            });
-        }
-
-        await getService.save();
+        await Service.findOneAndUpdate(
+            { 
+                email: req.user.email, 
+                "chatSession._id": id 
+            },{ 
+                $push: { 
+                    "chatSession.$.chatData": { $each: data.messages.slice(-2) }
+                }
+            }
+        );
 
         res.status(200).json({
             status: "success",
-            message: "Successfuly add trip data",
-            data: {}
+            message: "Successfuly add new reply",
+            data: {
+                response: data.response
+            }
         });
     } catch(err) {
         console.error(err);
