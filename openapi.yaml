@@ -377,6 +377,562 @@ paths:
                     example: jwt expired
                   data:
                     type: object
+  /service/trip/new:
+    post:
+      tags:
+        - service/trip
+      summary: Add new trip data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                distance:
+                  type: number
+                  example: 5
+                fare:
+                  type: number
+                  example: 10000
+                tip:
+                  type: number
+                  example: 1000
+                duration:
+                  type: number
+                  example: 5
+                time_start:
+                  type: string
+                  format: date-time
+                  example: "2025-05-24T18:11:39+00:00"
+                time_end:
+                  type: string
+                  format: date-time
+                  example: "2025-05-24T18:16:39+00:00"
+      responses:
+        "200":
+          description: Successfuly add trip data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly add trip data
+                  data:
+                    type: object
+        "400":
+          description: Invalid parameters or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Bad Request
+                  data:
+                    type: object
+  /service/trip/stats/daily:
+    get:
+      tags:
+        - service/trip
+      summary: Get daily trip stats
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfuly get daily stats
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get daily stats
+                  data:
+                    type: array
+                    items:
+                      type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/trip/stats/monthly:
+    get:
+      tags:
+        - service/trip
+      summary: Get monthly trip stats
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfuly get monthly stats
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get monthly stats
+                  data:
+                    type: array
+                    items:
+                      type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/trip/stats/yearly:
+    get:
+      tags:
+        - service/trip
+      summary: Get yearly trip stats
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfuly get yearly stats
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get yearly stats
+                  data:
+                    type: array
+                    items:
+                      type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/wellness/new:
+    post:
+      tags:
+        - service/wellness
+      summary: Add new wellness test data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                score:
+                  type: number
+                  example: 80
+                time:
+                  type: string
+                  format: date-time
+                  example: "2025-05-24T18:11:39+00:00"
+      responses:
+        "200":
+          description: Successfuly add wellness test data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly add wellness test data
+                  data:
+                    type: object
+        "400":
+          description: Invalid parameters or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/llm/fin_tips:
+    post:
+      tags:
+        - service/llm
+      summary: Get financial advice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pendapatan:
+                  type: number
+                  example: 10000000
+                pengeluaran:
+                  type: number
+                  example: 5000000
+                toleransi_risiko:
+                  type: string
+                  example: aggresive
+      responses:
+        "200":
+          description: Successfuly get financial advice
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get financial advice
+                  data:
+                    type: object
+        "400":
+          description: Failed to process request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/llm/wellness:
+    post:
+      tags:
+        - service/llm
+      summary: Get wellness advice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                energy_level:
+                  type: number
+                  example: 80
+                stress_level:
+                  type: number
+                  example: 60
+                sleep_quality:
+                  type: number
+                  example: 100
+                physical_condition:
+                  type: number
+                  example: 20
+      responses:
+        "200":
+          description: Successfuly get wellness advice
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get wellness advice
+                  data:
+                    type: object
+        "400":
+          description: Failed to process request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/llm/invest:
+    post:
+      tags:
+        - service/llm
+      summary: Get investment advice
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pendapatan:
+                  type: number
+                  example: 10000000
+                pengeluaran:
+                  type: number
+                  example: 5000000
+                toleransi_risiko:
+                  type: string
+                  example: aggresive
+      responses:
+        "200":
+          description: Successfuly get investment advice
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly get investment advice
+                  data:
+                    type: object
+        "400":
+          description: Failed to process request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/chat/create:
+    post:
+      tags:
+        - service/chat
+      summary: Create new chat session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  example: Who are you?
+      responses:
+        "200":
+          description: Successfuly create new chat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly create new chat
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 683251a3d4b624fd66affa94
+                      response:
+                        type: string
+        "400":
+          description: Failed to process request or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/chat/list:
+    get:
+      tags:
+        - service/chat
+      summary: List all chat sessions
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Successfuly list chat data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly list chat data
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 683251a3d4b624fd66affa94
+                        highlight:
+                          type: string
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/chat/read/{id}:
+    get:
+      tags:
+        - service/chat
+      summary: Read a chat session messages
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfuly read chat data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly read chat data
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                          example: user
+                        content:
+                          type: string
+        "400":
+          description: Invalid chat id or user not found
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/chat/reply:
+    put:
+      tags:
+        - service/chat
+      summary: Add a reply to a chat session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 6832602ab8e303429bc60da3
+                query:
+                  type: string
+                  example: How about invest it?
+      responses:
+        "200":
+          description: Successfuly add new reply
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly add new reply
+                  data:
+                    type: object
+                    properties:
+                      response:
+                        type: string
+        "400":
+          description: Failed to process request or invalid chat id
+          content:
+            application/json:
+              schema:
+                type: object
+  /service/predict/earnings:
+    post:
+      tags:
+        - service/predict
+      summary: Predict earnings
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date
+                  example: "2025-06-01"
+                end:
+                  type: string
+                  format: date
+                  example: "2025-06-07"
+                wellness_score:
+                  type: number
+                  example: 20
+      responses:
+        "200":
+          description: Successfuly predict earnings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Successfuly predict earnings
+                  data:
+                    type: object
+        "400":
+          description: Failed to process request or user not found
+          content:
+            application/json:
+              schema:
+                type: object
 components:
   securitySchemes:
     bearerAuth:

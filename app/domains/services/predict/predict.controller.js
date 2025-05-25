@@ -1,5 +1,3 @@
-const { daily } = require('../trip/stats/stats.controller');
-
 const Service = require('../services.model').Service;
 
 const earnings = async (req, res) => {
