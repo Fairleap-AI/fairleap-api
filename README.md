@@ -1,3 +1,20 @@
+<div align="center">
+  <table border="1">
+    <tr>
+      <td align="center" style="padding: 20px;">
+        <h3>📢 Domain & Email Migration Notice</h3>
+        <p>From <b>May 24 th, 2026</b>, Fairleap AI will transition to new domains as <code>fairleap.cloud</code> will not be renewed:</p>
+        <p>🌐 <b>Website:</b> <a href="https://fairleap.faizath.com">fairleap.faizath.com</a> (formerly <i>fairleap.cloud</i>)<br>
+        ⚙️ <b>API:</b> <a href="https://fairleap-api.faizath.com">fairleap-api.faizath.com</a> (formerly <i>api.fairleap.cloud</i>)<br>
+        📧 <b>Email:</b> <a href="mailto:contact@fairleap.faizath.com">contact@fairleap.faizath.com</a> (formerly <i>contact@fairleap.cloud</i>)<br>
+        🛰️ <b>CDN:</b> <a>fairleap-cdn.faizath.com</a> (formerly <i>cdn.fairleap.cloud</i>)<br>
+        📈 <b>Status Pages:</b> <a href="https://status.faizath.com/status/fairleap">https://status.faizath.com/status/fairleap</a> (formerly <i>status.fairleap.cloud</i>)
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <p align="center">
   <img src="assets/logo.png"/>
   <h1 align="center">Fairleap AI API Backend</h1>
